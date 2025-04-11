@@ -1,0 +1,239 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Chess Authentication</title>
+    <style>
+        body {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            background-color: #0d1117;
+            color: white;
+            font-family: 'Poppins', sans-serif;
+            margin: 0;
+            position: relative;
+        }
+
+        .background {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            background: url('https://images.chesscomfiles.com/uploads/v1/images_users/tiny_mce/PedroMP/phpHcFFLw.png') no-repeat center center/cover;
+            opacity: 0.15;
+            z-index: -1;
+        }
+
+        .auth-container {
+            background: rgba(30, 30, 30, 0.95);
+            padding: 30px;
+            border-radius: 12px;
+            text-align: center;
+            width: 350px;
+            box-shadow: 0px 0px 20px rgba(255, 255, 255, 0.2);
+            z-index: 10;
+            position: relative;
+            border: 2px solid #ffc107;
+        }
+
+        .auth-container h1 {
+            margin-bottom: 20px;
+            font-size: 24px;
+        }
+
+        .input-group {
+            margin: 15px 0;
+            text-align: left;
+        }
+
+        .input-group label {
+            display: block;
+            margin-bottom: 5px;
+            font-weight: bold;
+        }
+
+        .input-group input {
+            width: 100%;
+            padding: 12px;
+            border: 1px solid #ffc107;
+            border-radius: 6px;
+            background: #222;
+            color: white;
+            font-size: 16px;
+            transition: 0.3s;
+        }
+
+        .input-group input:focus {
+            border-color: #ffcc00;
+            outline: none;
+            box-shadow: 0px 0px 8px #ffcc00;
+        }
+
+        button {
+            background: #ffcc00;
+            border: none;
+            padding: 12px;
+            width: 100%;
+            border-radius: 6px;
+            cursor: pointer;
+            font-size: 18px;
+            font-weight: bold;
+            transition: 0.3s;
+        }
+
+        button:hover {
+            background: #e6b800;
+            box-shadow: 0px 0px 10px #ffcc00;
+        }
+
+        .toggle-link {
+            margin-top: 15px;
+        }
+
+        .toggle-link a {
+            color: #ffcc00;
+            text-decoration: none;
+            font-weight: bold;
+            cursor: pointer;
+        }
+
+        .toggle-link a:hover {
+            text-decoration: underline;
+        }
+    </style>
+</head>
+<body>
+    <div class="background"></div>
+    <div class="auth-container">
+        <h1 id="formTitle">♟️ Chess Login ♞</h1>
+        
+        <form id="loginForm">
+            <div class="input-group">
+                <label for="loginUsername">Username</label>
+                <input type="text" id="loginUsername" required>
+            </div>
+            <div class="input-group">
+                <label for="loginPassword">Password</label>
+                <input type="password" id="loginPassword" required>
+            </div>
+            <button type="submit">Login</button>
+            <p class="toggle-link">Don't have an account? <a onclick="toggleForm()">Sign Up</a></p>
+        </form>
+
+        <form id="signupForm" style="display: none;">
+            <div class="input-group">
+                <label for="signupUsername">Username</label>
+                <input type="text" id="signupUsername" required>
+            </div>
+            <div class="input-group">
+                <label for="signupPassword">Password</label>
+                <input type="password" id="signupPassword" required>
+            </div>
+            <div class="input-group">
+                <label for="confirmPassword">Confirm Password</label>
+                <input type="password" id="confirmPassword" required>
+            </div>
+            <button type="submit">Sign Up</button>
+            <p class="toggle-link">Already have an account? <a onclick="toggleForm()">Sign In</a></p>
+        </form>
+    </div>
+
+    <script>
+        function toggleForm() {
+            let loginForm = document.getElementById("loginForm");
+            let signupForm = document.getElementById("signupForm");
+            let formTitle = document.getElementById("formTitle");
+
+            if (loginForm.style.display === "none") {
+                loginForm.style.display = "block";
+                signupForm.style.display = "none";
+                formTitle.innerText = "♟️ Chess Login ♞";
+            } else {
+                loginForm.style.display = "none";
+                signupForm.style.display = "block";
+                formTitle.innerText = "♟️ Chess Sign Up ♞";
+            }
+        }
+
+        document.getElementById("signupForm").addEventListener("submit", function (event) {
+            event.preventDefault();
+            let username = document.getElementById("signupUsername").value;
+            let password = document.getElementById("signupPassword").value;
+            let confirmPassword = document.getElementById("confirmPassword").value;
+
+            if (password !== confirmPassword) {
+                alert("Passwords do not match!");
+                return;
+            }
+
+            localStorage.setItem("username", username);
+            localStorage.setItem("password", password);
+            alert("Account created successfully! Please sign in.");
+            toggleForm();
+        });
+
+        document.getElementById("loginForm").addEventListener("submit", function (event) {
+            event.preventDefault();
+            let username = document.getElementById("loginUsername").value;
+            let password = document.getElementById("loginPassword").value;
+
+            let storedUsername = localStorage.getItem("username");
+            let storedPassword = localStorage.getItem("password");
+
+            if (username === storedUsername && password === storedPassword) {
+                localStorage.setItem("loggedInUser", username);
+                alert("Login successful! Redirecting to chess game...");
+                window.location.href = "chess.html"; 
+            } else {
+                alert("Invalid username or password!");
+            }
+        });
+    </script>
+    
+</body>
+
+<body>
+    <div id="voiceChat">
+        <button onclick="startVoiceChat()">Start Voice Chat</button>
+        <audio id="remoteAudio" autoplay></audio>
+    </div>
+
+    
+</body>
+
+</html>
+<script>
+    function startVoiceChat() {
+        alert("Voice chat started!");
+        // Add your voice chat logic here
+    }
+
+    document.getElementById("loginForm").addEventListener("submit", function (event) {
+        event.preventDefault();
+        let username = document.getElementById("loginUsername").value;
+        let password = document.getElementById("loginPassword").value;
+
+        let storedUsername = localStorage.getItem("username");
+        let storedPassword = localStorage.getItem("password");
+
+        if (username === storedUsername && password === storedPassword) {
+            localStorage.setItem("loggedInUser", username);
+            alert("Login successful! Redirecting to chess game...");
+            
+            // Move voice chat button to appear after successful login
+            const voiceChatDiv = document.createElement("div");
+            voiceChatDiv.id = "voiceChat";
+            voiceChatDiv.innerHTML = `
+                <button onclick="startVoiceChat()">Start Voice Chat</button>
+                <audio id="remoteAudio" autoplay></audio>
+            `;
+            document.body.appendChild(voiceChatDiv);
+
+            window.location.href = "chess.html"; 
+        } else {
+            alert("Invalid username or password!");
+        }
+    });
+</script>
